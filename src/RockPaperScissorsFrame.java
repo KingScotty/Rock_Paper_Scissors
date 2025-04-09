@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RockPaperScissorsFrame extends JFrame {
-
+    private int playerWins = 0;
+    private int computerWins = 0;
+    private int ties = 0;
     private JTextArea resultTextArea;
+    private JTextArea tieScoreTextArea;
     private JTextArea playerScoreTextArea;
     private JTextArea computerScoreTextArea;
 
@@ -54,5 +57,33 @@ public class RockPaperScissorsFrame extends JFrame {
         buttonPanel.add(scissorsButton);
         buttonPanel.add(quitButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        //makes the buttons work
+        rockButton.addActionListener(e -> playRound(Move.ROCK)); //will add playRound later
+        paperButton.addActionListener(e -> playRound(Move.PAPER));
+       scissorsButton.addActionListener(e -> playRound(Move.SCISSORS));
+        quitButton.addActionListener(e -> System.exit(0));
+        //Score panel
+        JPanel scorePanel = new JPanel( new GridLayout(2, 2));
+        scorePanel.setBorder(BorderFactory.createTitledBorder("Score"));
+
+        scorePanel.add(new JLabel("Player Wins:"));
+        playerScoreField = new JTextField("0");
+        playerScoreField.setEditable(false);
+        scorePanel.add(playerScoreField);
+
+        scorePanel.add(new JLabel("Computer Wins:"));
+        playerScoreField = new JTextField("0");
+        playerScoreField.setEditable(false);
+        scorePanel.add(playerScoreField);
+
+        scorePanel.add(new JLabel("Ties:"));
+        playerScoreField = new JTextField("0");
+        playerScoreField.setEditable(false);
+        scorePanel.add(playerScoreField);
+
+        add(scorePanel, BorderLayout.EAST);
+
+
     }
 }
