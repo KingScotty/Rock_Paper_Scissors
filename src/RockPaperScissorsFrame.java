@@ -8,9 +8,9 @@ public class RockPaperScissorsFrame extends JFrame {
     private int computerWins = 0;
     private int ties = 0;
     private JTextArea resultTextArea;
-    private JTextArea tieScoreTextArea;
-    private JTextArea playerScoreTextArea;
-    private JTextArea computerScoreTextArea;
+    private JTextField playerScoreField;
+    private JTextField computerScoreField;
+    private JTextField tieScoreField;
 
     public RockPaperScissorsFrame() {
         setTitle("Rock Paper Scissors");
@@ -64,7 +64,7 @@ public class RockPaperScissorsFrame extends JFrame {
        scissorsButton.addActionListener(e -> playRound(Move.SCISSORS));
         quitButton.addActionListener(e -> System.exit(0));
         //Score panel
-        JPanel scorePanel = new JPanel( new GridLayout(2, 2));
+        JPanel scorePanel = new JPanel( new GridLayout(3, 2));
         scorePanel.setBorder(BorderFactory.createTitledBorder("Score"));
 
         scorePanel.add(new JLabel("Player Wins:"));
@@ -73,17 +73,48 @@ public class RockPaperScissorsFrame extends JFrame {
         scorePanel.add(playerScoreField);
 
         scorePanel.add(new JLabel("Computer Wins:"));
-        playerScoreField = new JTextField("0");
-        playerScoreField.setEditable(false);
-        scorePanel.add(playerScoreField);
+        computerScoreField = new JTextField("0");
+        computerScoreField.setEditable(false);
+        scorePanel.add(computerScoreField);
 
         scorePanel.add(new JLabel("Ties:"));
-        playerScoreField = new JTextField("0");
-        playerScoreField.setEditable(false);
-        scorePanel.add(playerScoreField);
-
+        tieScoreField = new JTextField("0");
+        tieScoreField.setEditable(false);
+        scorePanel.add(tieScoreField);
+        //adding the score panel to the frame
         add(scorePanel, BorderLayout.EAST);
+        //game logic
 
 
     }
+    private void playRound(Move playerMove) {
+        Move computerMove = Move.values()[new Random().nextInt(3)];
+        String result = "";
+
+        if (playerMove == computerMove) {
+            ties++;
+            result = "Tie!";
+        } else if ((playerMove == Move.ROCK && computerMove == Move.SCISSORS) ||
+                (playerMove == Move.PAPER && computerMove == Move.ROCK) ||
+                (playerMove == Move.SCISSORS && computerMove == Move.PAPER)) {
+            playerWins++;
+            result = playerMove + " beats " + computerMove + ". Player wins!";
+        } else {
+            computerWins++;
+            result = computerMove + " beats " + playerMove + ". Computer wins!";
+        }
+
+        resultTextArea.append(result + "\n");
+        updateScoreFields();
+    }
+
+    private void updateScoreFields() {
+        playerScoreField.setText(String.valueOf(playerWins));
+        computerScoreField.setText(String.valueOf(computerWins));
+        tieScoreField.setText(String.valueOf(ties));
+    }
+    public enum Move {
+        ROCK, PAPER, SCISSORS
+    }
+
 }
